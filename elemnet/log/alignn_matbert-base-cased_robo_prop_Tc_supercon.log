@@ -1,0 +1,12 @@
+
+2024-05-31 16:29:06.260671:job config: {'train_data_path': '/data/yll6162/alignntl_dft_3d/tl_dataset/dataset_alignn_matbert-base-cased_robo_prop_Tc_supercon_train.csv', 'val_data_path': '/data/yll6162/alignntl_dft_3d/tl_dataset/dataset_alignn_matbert-base-cased_robo_prop_Tc_supercon_val.csv', 'test_data_path': '/data/yll6162/alignntl_dft_3d/tl_dataset/dataset_alignn_matbert-base-cased_robo_prop_Tc_supercon_test.csv', 'label': 'Tc_supercon', 'input_type': None, 'log_folder': 'log', 'log_file': 'alignn_matbert-base-cased_robo_prop_Tc_supercon.log', 'test_metric': 'mae', 'architecture': '1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1', 'model_seed': 0, 'loss_type': 'mae', 'config_file': 'sample/alignn_matbert-base-cased_robo_prop_Tc_supercon_job.config', 'use_valid': True, 'project': 'MOF', 'regressors': None, 'input_types': None, 'paramsGrid': {'optimizer': 'Adam', 'learning_rate': 0.0001, 'patience': 100, 'dropouts': [0.8, 0.9, 0.7, 0.8], 'EVAL_FREQUENCY': 1000}, 'save_path': 'sample/alignn_matbert-base-cased_robo_prop_Tc_supercon', 'model_path': None, 'last_layer_with_weight': True, 'keras_path': 'model/alignn_matbert-base-cased_robo_prop_Tc_supercon', 'test_size': None, 'val_size': None}
+2024-05-31 16:29:06.260726:train data path is  /data/yll6162/alignntl_dft_3d/tl_dataset/dataset_alignn_matbert-base-cased_robo_prop_Tc_supercon_train.csv
+2024-05-31 16:29:06.525039:input attribute sets are:  None
+2024-05-31 16:29:06.525192:test data path is  /data/yll6162/alignntl_dft_3d/tl_dataset/dataset_alignn_matbert-base-cased_robo_prop_Tc_supercon_test.csv
+2024-05-31 16:29:06.620693:val data path is  /data/yll6162/alignntl_dft_3d/tl_dataset/dataset_alignn_matbert-base-cased_robo_prop_Tc_supercon_val.csv
+2024-05-31 16:29:06.712966:input attributes are:  Index(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+       ...
+       '758.1', '759.1', '760.1', '761.1', '762.1', '763.1', '764.1', '765.1',
+       '766.1', '767.1'],
+      dtype='object', length=1536)
+2024-05-31 16:29:06.713093:label: Tc_supercon

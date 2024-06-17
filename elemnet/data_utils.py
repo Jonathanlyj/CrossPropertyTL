@@ -5,10 +5,12 @@ import sys
 from collections import defaultdict
 
 import numpy
+import pandas as pd
 import pandas
 import sklearn.preprocessing
 #from matminer.featurizers.base import MultipleFeaturizer
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import KFold
 
 formulare = re.compile(r'([A-Z][a-z]*)(\d*\.*\d*)')
 
@@ -163,37 +165,60 @@ def get_fractions(comp):
         return np.array([comp[e] if e in comp else 0 for e in elements_tl], np.float32)
     else:   return None
 
-def load_csv(train_data_path, val_data_path=None, test_data_path=None, input_types = None, label =None, test_size=None, val_size=0, logger=None):
+def load_csv(train_data_path, val_data_path=None, test_data_path=None, input_types = None, label =None, test_size=None, val_size=0, shuffle=False, logger=None, full=False,
+save_data=False):
     assert logger is not None
     logger.fprint('train data path is ', train_data_path)
-    data_f = pandas.read_csv(train_data_path)
+    data_f = pandas.read_csv(train_data_path, index_col=0) # for atomgpt data
+    # data_f = pd.read_csv(train_data_path) # for psed data
     logger.fprint('input attribute sets are: ', input_types)
-    if test_data_path:
-        logger.fprint('test data path is ', test_data_path)
-        data_ft = pandas.read_csv(test_data_path)
-    elif test_size:
-        logger.fprint('splitting data into with test ratio=', test_size)
-        data_f, data_ft = train_test_split(data_f, test_size=test_size, random_state=12345)
-    else:
-        data_ft = pd.DataFrame(columns=data_f.columns)
+    if not full:
+        if test_data_path:
+            logger.fprint('test data path is ', test_data_path)
+            data_ft = pandas.read_csv(test_data_path, index_col=0)
+        elif test_size:
+            logger.fprint('splitting data into with test ratio=', test_size)
+            if shuffle:
+                data_f, data_ft = train_test_split(data_f, test_size=test_size, random_state=12345)
+            else:
+                data_f, data_ft = train_test_split(data_f, test_size=test_size, shuffle=False)
 
-    if val_data_path:
-        logger.fprint('val data path is ', val_data_path)
-        data_fv = pandas.read_csv(val_data_path)
-    elif val_size>0:
-        data_fv = train_test_split(data_f, val_size=val_size, random_state=12345)
-    else:
-        data_fv= data_ft
+        else:
+            data_ft = pd.DataFrame(columns=data_f.columns)
+
+        if val_data_path:
+            logger.fprint('val data path is ', val_data_path)
+            data_fv = pandas.read_csv(val_data_path, index_col=0)
+        elif val_size>0:
+            if shuffle:
+                data_f, data_fv = train_test_split(data_f, test_size=val_size / (1 - test_size), random_state=12345)
+            else:
+                data_f, data_fv = train_test_split(data_f, test_size=val_size / (1 - test_size), shuffle=False)
+        else:
+            data_fv= data_ft
+        if save_data:
+            save_dir = "../llm_data/"
+            save_dataname = train_data_path.split('/')[-1].rstrip(".csv")
+            data_f.to_csv(os.path.join(save_dir, f"{save_dataname}_train.csv"))
+            data_fv.to_csv(os.path.join(save_dir, f"{save_dataname}_val.csv"))
+            data_ft.to_csv(os.path.join(save_dir, f"{save_dataname}_test.csv"))
     data_columns = data_f.columns
+    
     if not input_types:
-        input_attributes = data_columns[:-1]
-        label = data_columns[-1]
+        input_attributes = data_columns[:-2]
+        label = data_columns[-2]
     else:
         input_attributes = []
         for input_type in input_types:
             input_attributes += input_atts[input_type]
+
     logger.fprint('input attributes are: ', input_attributes)
     logger.fprint('label:', label)
+    if full:
+        ids = data_f['ids'].values
+        X = data_f[input_attributes].values
+        y = data_f[label].values
+        return ids, X, y
     train_X = data_f[input_attributes].values
     train_y = data_f[label].values
     logger.fprint(data_f.describe())

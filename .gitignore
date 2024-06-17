@@ -1,0 +1,8 @@
+*mof*
+*.csv
+/elemnet/sample/*
+/elemnet/model/*
+!elemnet/sample/*.config
+*llm_data/*
+*/__pycache__/*
+elemnet/sample/**/*mof*.config
