@@ -2,7 +2,9 @@
 *.csv
 /elemnet/sample/*
 /elemnet/model/*
-!elemnet/sample/*.config
+/elemnet/log/*
+!elemnet/sample/example*.config
 *llm_data/*
 */__pycache__/*
 elemnet/sample/**/*mof*.config
+/prediction/*
