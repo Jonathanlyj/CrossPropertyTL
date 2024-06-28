@@ -32,7 +32,7 @@ from sklearn import preprocessing
 from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score
 from tensorflow.python import debug as tf_debug
 from train_utils import *
-import autosklearn.classification
+# import autosklearn.classification
 
 parser = argparse.ArgumentParser(description='run ml regressors on dataset')
 parser.add_argument('--train_data_path', help='path to the training dataset',default=None, type=str, required=False)
