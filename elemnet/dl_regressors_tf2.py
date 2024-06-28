@@ -284,7 +284,7 @@ def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, ids = Non
 
         # Create a new DataFrame with predictions and actual labels
         # output_dir = "../pred/mof/query_3"
-        output_dir = "../pred/atomgpt_new"
+        output_dir = "../prediction"
         pred_path = os.path.join(output_dir, f"{save_path.split('/')[-1]}_pred_otf.csv")
         predictions_df = pd.DataFrame({'ids_test': ids,'labels': actual_labels, 'predictions': raw_predictions.flatten()})
         # if not os.path.exists(pred_path):
