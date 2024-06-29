@@ -8,22 +8,23 @@ charset-normalizer==2.0.12
 clang==5.0
 cycler==0.11.0
 dataclasses==0.8
-decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
-entrypoints @ file:///home/conda/feedstock_root/build_artifacts/entrypoints_1643888246732/work
+decorator==5.1.1
+entrypoints==0.4
 flatbuffers==1.12
 future==0.18.3
 gast==0.4.0
 google-auth==1.35.0
 google-auth-oauthlib==0.4.6
 google-pasta==0.2.0
+graphviz==0.19.1
 grpcio==1.48.2
 h5py==3.1.0
 idna==3.7
 importlib-metadata==4.8.3
 importlib-resources==5.4.0
-ipykernel @ file:///home/conda/feedstock_root/build_artifacts/ipykernel_1620912934572/work/dist/ipykernel-5.5.5-py3-none-any.whl
+ipykernel==5.5.5
 ipython==5.8.0
-ipython-genutils @ file:///tmp/build/80754af9/ipython_genutils_1606773439826/work
+ipython-genutils==0.2.0
 joblib==1.1.1
 jsonschema==3.2.0
 jupyter-client==5.3.4
@@ -43,22 +44,24 @@ opt-einsum==3.3.0
 packaging==21.3
 palettable==3.3.2
 pandas==1.1.5
-pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
-pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
+pexpect==4.8.0
+pickleshare==0.7.5
 Pillow==8.4.0
 Pint==0.17
+pip==21.3.1
 plotly==5.18.0
 prompt-toolkit==1.0.15
 protobuf==3.19.6
-ptyprocess @ file:///tmp/build/80754af9/ptyprocess_1609355006118/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
+ptyprocess==0.7.0
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
-Pygments @ file:///opt/conda/conda-bld/pygments_1644249106324/work
+pydot==1.4.2
+Pygments==2.11.2
 pymatgen==2020.12.31
 pymongo==4.1.1
 pyparsing==3.0.7
 pyrsistent==0.18.0
-python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
+python-dateutil==2.8.2
 python-version==0.0.2
 pytz==2023.3.post1
 pyzmq==19.0.2
@@ -70,6 +73,7 @@ ruamel.yaml.clib==0.2.8
 scikit-learn==0.24.0
 scipy==1.5.4
 seaborn==0.11.2
+setuptools==59.6.0
 simplegeneric==0.8.1
 six==1.15.0
 spglib==2.0.2
@@ -85,11 +89,12 @@ termcolor==1.1.0
 threadpoolctl==3.1.0
 tornado==5.1.1
 tqdm==4.64.1
-traitlets @ file:///home/conda/feedstock_root/build_artifacts/traitlets_1631041982274/work
+traitlets==4.3.3
 typing-extensions==3.7.4.3
 uncertainties==3.1.7
 urllib3==1.26.18
-wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
+wcwidth==0.2.5
 Werkzeug==2.0.3
+wheel==0.37.1
 wrapt==1.12.1
 zipp==3.6.0
