@@ -35,7 +35,7 @@ optimizer = optim.SGD(model.parameters(), lr=0.01)
 
 # Training loop (just one epoch)
 model.train()
-for epoch in range(1):
+for epoch in range(10):
     optimizer.zero_grad()  # Zero gradients
     outputs = model(input_data)  # Forward pass
     loss = criterion(outputs, target_data)  # Compute loss
