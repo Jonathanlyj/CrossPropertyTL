@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -16,6 +15,13 @@ def set_seed(seed):
     torch.use_deterministic_algorithms(True)
 
 set_seed(42)
+
+# Check if a GPU is available, otherwise use the CPU
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# print(f"Using device: {device}")
+
+device = torch.device("cpu")
+
 
 # Custom model with dense, dropout, and batch normalization layers
 class CustomRegressor(nn.Module):
@@ -35,17 +41,17 @@ class CustomRegressor(nn.Module):
         return x
 
 # Generate random input and target data
-input_data = torch.randn(100, 10)  # 100 samples, 10 features
-target_data = torch.randn(100, 1)  # 100 target values
+input_data = torch.randn(100, 10).to(device)  # 100 samples, 10 features, move to device
+target_data = torch.randn(100, 1).to(device)  # 100 target values, move to device
 
 # Initialize the custom model, loss function, and optimizer
-model = CustomRegressor()
+model = CustomRegressor().to(device)  # Move model to device
 criterion = nn.MSELoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 
 # Training loop (just one epoch)
 model.train()
-for epoch in range(1):
+for epoch in range(1000):
     optimizer.zero_grad()  # Zero gradients
     outputs = model(input_data)  # Forward pass
     loss = criterion(outputs, target_data)  # Compute loss
@@ -53,4 +59,4 @@ for epoch in range(1):
     optimizer.step()  # Update weights
 
 # Print the loss after one epoch
-print(f"Loss after one epoch: {loss.item()}")
+print(f"Loss after training: {loss.item()}")
