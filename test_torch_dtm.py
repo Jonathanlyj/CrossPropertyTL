@@ -1,3 +1,4 @@
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -12,30 +13,39 @@ def set_seed(seed):
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
+    torch.use_deterministic_algorithms(True)
 
 set_seed(42)
 
-# Simple one-layer regression model
-class SimpleRegressor(nn.Module):
+# Custom model with dense, dropout, and batch normalization layers
+class CustomRegressor(nn.Module):
     def __init__(self):
-        super(SimpleRegressor, self).__init__()
-        self.linear = nn.Linear(10, 1)  # One fully connected layer
-
+        super(CustomRegressor, self).__init__()
+        self.fc1 = nn.Linear(10, 64)  # Dense layer (10 input features, 64 output)
+        self.bn1 = nn.BatchNorm1d(64)  # Batch Normalization layer
+        self.dropout = nn.Dropout(p=0.5)  # Dropout layer with 50% dropout rate
+        self.fc2 = nn.Linear(64, 1)  # Final Dense layer (64 input features, 1 output)
+    
     def forward(self, x):
-        return self.linear(x)
+        x = self.fc1(x)  # Apply first fully connected layer
+        x = self.bn1(x)  # Apply batch normalization
+        x = torch.relu(x)  # Apply ReLU activation function
+        x = self.dropout(x)  # Apply dropout
+        x = self.fc2(x)  # Apply final fully connected layer
+        return x
 
 # Generate random input and target data
 input_data = torch.randn(100, 10)  # 100 samples, 10 features
 target_data = torch.randn(100, 1)  # 100 target values
 
-# Initialize model, loss function, and optimizer
-model = SimpleRegressor()
+# Initialize the custom model, loss function, and optimizer
+model = CustomRegressor()
 criterion = nn.MSELoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 
 # Training loop (just one epoch)
 model.train()
-for epoch in range(10):
+for epoch in range(1):
     optimizer.zero_grad()  # Zero gradients
     outputs = model(input_data)  # Forward pass
     loss = criterion(outputs, target_data)  # Compute loss
