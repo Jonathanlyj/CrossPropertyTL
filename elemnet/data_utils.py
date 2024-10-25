@@ -221,15 +221,18 @@ save_data=False):
         return ids, X, y
     train_X = data_f[input_attributes].values
     train_y = data_f[label].values
+    train_ids = data_f['ids'].values
     logger.fprint(data_f.describe())
     test_X = data_ft[input_attributes].values
     test_y = data_ft[label].values
+    test_ids = data_ft['ids'].values
     logger.fprint(data_ft.describe())
     valid_X = data_fv[input_attributes].values
     valid_y = data_fv[label].values
+    valid_ids = data_fv['ids'].values
     logger.fprint(data_fv.describe())
     logger.fprint(' train, test, valid sizes: ', train_X.shape, train_y.shape, test_X.shape, test_y.shape, valid_X.shape, valid_y.shape)
-    return train_X, train_y, valid_X, valid_y, test_X, test_y
+    return train_ids, train_X, train_y,  valid_ids, valid_X, valid_y, test_ids, test_X, test_y
 
 
 #print get_fractions({'H':0.33, 'O':0.67})

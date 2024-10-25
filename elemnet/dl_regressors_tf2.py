@@ -65,7 +65,7 @@ SEED = args.seed
 print(f"SEED set to {args.seed}")
 
 
-def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, ids = None, logger=None, config=None, save_pred=False):
+def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, ids = None, ids_test = None, logger=None, config=None, save_pred=False):
     assert config is not None
     hyper_params.update(config['paramsGrid'])
     assert  logger is not None
@@ -287,7 +287,7 @@ def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, ids = Non
         # output_dir = "../pred/mof/query_3"
         output_dir = "../prediction"
         pred_path = os.path.join(output_dir, f"{save_path.split('/')[-1]}_pred_otf.csv")
-        predictions_df = pd.DataFrame({'ids_test': ids,'labels': actual_labels, 'predictions': raw_predictions.flatten()})
+        predictions_df = pd.DataFrame({'ids_test': ids_test,'labels': actual_labels, 'predictions': raw_predictions.flatten()})
         # if not os.path.exists(pred_path):
         #     predictions_df = pd.DataFrame({'ids_test': ids,'labels': actual_labels, 'predictions': raw_predictions.flatten()})
         # else:
@@ -376,7 +376,7 @@ if __name__=='__main__':
 
         
     else:
-        train_X, train_y, valid_X, valid_y, test_X, test_y = load_csv(train_data_path=config['train_data_path'],
+        train_ids, train_X, train_y, valid_ids, valid_X, valid_y, test_ids, test_X, test_y = load_csv(train_data_path=config['train_data_path'],
                                                                        val_data_path=config['val_data_path'],
                                                                        test_data_path=config['test_data_path'],
                                                                     test_size = config['test_size'],
@@ -397,5 +397,5 @@ if __name__=='__main__':
         # valid_X = np.where(valid_X == 0, small_constant, valid_X)
         # test_X = np.where(test_X == 0, small_constant, test_X)
 
-        run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred=True, logger=logger, config=config)
+        run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred=True, ids_test= test_ids, logger=logger, config=config)
         logger.fprint('done')
