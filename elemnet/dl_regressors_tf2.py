@@ -32,6 +32,7 @@ from sklearn import preprocessing
 from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score
 from tensorflow.python import debug as tf_debug
 from train_utils import *
+import datetime
 # import autosklearn.classification
 
 parser = argparse.ArgumentParser(description='run ml regressors on dataset')
@@ -317,7 +318,9 @@ if __name__=='__main__':
         config.update(load_config(args.config_file))
     if not os.path.exists(config['log_folder']):
         createDir(config['log_folder'])
-    logger = Record_Results(os.path.join(config['log_folder'], config['log_file']))
+    timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+    log_file_ts = f"{os.path.splitext(config['log_file'])[0]}_{timestamp}{os.path.splitext(config['log_file'])[1]}"
+    logger = Record_Results(os.path.join(config['log_folder'], log_file_ts))
     logger.fprint('job config: ' + str(config))
     small_constant = 1e-6
     if args.kfold:
