@@ -49,7 +49,7 @@ parser.add_argument('--seed', help='random seed', default=0, type=int, required=
 parser.add_argument('--kfold', help='enable k-fold cross-validation', action='store_true')
 args,_ = parser.parse_known_args()
 
-hyper_params = {'batch_size':32, 'num_epochs':2000, 'EVAL_FREQUENCY':1000, \
+hyper_params = {'batch_size':256, 'num_epochs':2000, 'EVAL_FREQUENCY':1000, \
                 'learning_rate':1e-7, 'momentum':0.9, 'lr_drop_rate':0.5, 'epoch_step':500, \
                 'nesterov':True, 'reg_W':0., 'optimizer':'Adam', 'reg_type':None, \
                     'activation':'relu', 'patience':100}
@@ -63,7 +63,7 @@ random.seed(args.seed)
 
 SEED = args.seed
 print(f"SEED set to {args.seed}")
-
+#1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1
 
 def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, ids = None, ids_test = None, logger=None, config=None, save_pred=False):
     assert config is not None
@@ -81,13 +81,13 @@ def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, ids = Non
         prev_block_num_outputs = None
         prev_stub_output = net
         for i in range(len(archs)):
-            arch = archs[i]
+            arch = archs[i] # 1024Rx4D
             if 'x' in arch:
                 arch = arch.split('x')
-                num_outputs = int(re.findall(r'\d+',arch[0])[0])
-                layers = int(re.findall(r'\d+',arch[1])[0])
+                num_outputs = int(re.findall(r'\d+',arch[0])[0]) # 1024
+                layers = int(re.findall(r'\d+',arch[1])[0]) # 4
                 j = 0
-                aux_layers = re.findall(r'[A-Z]',arch[0])
+                aux_layers = re.findall(r'[A-Z]',arch[0]) # ['R']
                 for l in range(layers):
                     if aux_layers and aux_layers[0] == 'B':
                         if len(aux_layers)>1 and aux_layers[1]=='A':
