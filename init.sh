@@ -1,4 +1,4 @@
 pip install -r torch_requirements.txt
 cd data/
-wget https://figshare.com/s/8629d471a5ad6b063465 -O tl_dataset.zip
+wget https://figshare.com/ndownloader/articles/27569631/versions/1 -O tl_dataset.zip
 unzip tl_dataset.zip -d tl_dataset
