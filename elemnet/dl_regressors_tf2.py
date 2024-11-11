@@ -59,7 +59,7 @@ SEED=1234567
 np.random.seed(args.seed)
 tf.random.set_seed(args.seed)
 random.seed(args.seed)
-
+tf.keras.utils.set_random_seed(args.seed)
 SEED = args.seed
 print(f"SEED set to {args.seed}")
 
