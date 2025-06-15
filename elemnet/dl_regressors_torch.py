@@ -465,76 +465,76 @@ if __name__=='__main__':
     small_constant = 1e-6
 
     log_machine_info(logger)
-    # if args.kfold:
-    #     kf = KFold(n_splits = round(1/config['test_size']), shuffle=False)
-    #     # kf = KFold(n_splits = round(1/config['test_size']), shuffle=True, random_state=seed + 10)
-    #     datasets = []
-    #     ids, X, y = load_csv(train_data_path=config['train_data_path'],
-    #                                                                 #   val_data_path=config['val_data_path'],
-    #                                                                 #   test_data_path=config['test_data_path'],
-    #                                                                 test_size = config['test_size'],
-    #                                                                 #   input_types = config['input_types'],
-    #                                                                 label=config['label'], logger=logger,
-    #                                                                 full = True)
-    #     if config['ext_train_data_path'] is not None:
-    #         ext_ids, ext_X, ext_y = load_csv(train_data_path=config['ext_train_data_path'],
-    #                                                                     #   val_data_path=config['val_data_path'],
-    #                                                                     #   test_data_path=config['test_data_path'],
-    #                                                                     test_size = config['test_size'],
-    #                                                                     #   input_types = config['input_types'],
-    #                                                                     label=config['label'], logger=logger,
-    #                                                                     full = True)
+    if args.kfold:
+        kf = KFold(n_splits = round(1/config['test_size']), shuffle=False)
+        # kf = KFold(n_splits = round(1/config['test_size']), shuffle=True, random_state=seed + 10)
+        datasets = []
+        ids, X, y = load_csv(train_data_path=config['train_data_path'],
+                                                                    #   val_data_path=config['val_data_path'],
+                                                                    #   test_data_path=config['test_data_path'],
+                                                                    test_size = config['test_size'],
+                                                                    #   input_types = config['input_types'],
+                                                                    label=config['label'], logger=logger,
+                                                                    full = True)
+        if config['ext_train_data_path'] is not None:
+            ext_ids, ext_X, ext_y = load_csv(train_data_path=config['ext_train_data_path'],
+                                                                        #   val_data_path=config['val_data_path'],
+                                                                        #   test_data_path=config['test_data_path'],
+                                                                        test_size = config['test_size'],
+                                                                        #   input_types = config['input_types'],
+                                                                        label=config['label'], logger=logger,
+                                                                        full = True)
 
         
-    #     mads = []
-    #     maes = []
-    #     for fold_idx, (train_index, test_index) in enumerate(kf.split(X)):
-    #         train_X, valid_X = X[train_index], X[test_index]
-    #         train_y, valid_y = y[train_index], y[test_index]
-    #         _, test_ids = ids[train_index], ids[test_index]
-    #         if config['ext_train_data_path'] is not None:
-    #             train_X = np.concatenate((train_X, ext_X), axis=0)
-    #             train_y = np.concatenate((train_y, ext_y), axis=0)
-    #         test_X = valid_X
-    #         test_y = valid_y
-    #         # train_X = np.nan_to_num(train_X, nan=small_constant)
-    #         # valid_X = np.nan_to_num(valid_X, nan=small_constant)
-    #         # test_X = np.nan_to_num(test_X, nan=small_constant)
+        mads = []
+        maes = []
+        for fold_idx, (train_index, test_index) in enumerate(kf.split(X)):
+            train_X, valid_X = X[train_index], X[test_index]
+            train_y, valid_y = y[train_index], y[test_index]
+            _, test_ids = ids[train_index], ids[test_index]
+            if config['ext_train_data_path'] is not None:
+                train_X = np.concatenate((train_X, ext_X), axis=0)
+                train_y = np.concatenate((train_y, ext_y), axis=0)
+            test_X = valid_X
+            test_y = valid_y
+            # train_X = np.nan_to_num(train_X, nan=small_constant)
+            # valid_X = np.nan_to_num(valid_X, nan=small_constant)
+            # test_X = np.nan_to_num(test_X, nan=small_constant)
  
-    #         assert not np.any(np.isnan(train_X))
-    #         # train_X = np.where(train_X == 0, small_constant, train_X)
-    #         # valid_X = np.where(valid_X == 0, small_constant, valid_X)
-    #         # test_X = np.where(test_X == 0, small_constant, test_X)
+            assert not np.any(np.isnan(train_X))
+            # train_X = np.where(train_X == 0, small_constant, train_X)
+            # valid_X = np.where(valid_X == 0, small_constant, valid_X)
+            # test_X = np.where(test_X == 0, small_constant, test_X)
 
-    #         test_mae = run_regressors(train_X, train_y, valid_X, valid_y, valid_X, valid_y, logger=logger, config=config, save_pred=True, ids = test_ids)
-    #         mad = mean_absolute_error(len(test_y) * [np.mean(train_y)], test_y)
-    #         mads.append(mad)
-    #         maes.append(test_mae)
-    #         logger.fprint(f'MAD is {mad}')
-    #     logger.fprint(f'Mean MAD is {np.mean(mads)}')
-    #     logger.fprint(f'Mean MAE is {np.mean(maes)}')
-    #     logger.fprint('done')
-    # else:
-    #     train_ids, train_X, train_y,  valid_ids, valid_X, valid_y, test_ids, test_X, test_y = load_csv(train_data_path=config['train_data_path'],
-    #                                                                                                 val_data_path=config['val_data_path'],
-    #                                                                                                 test_data_path=config['test_data_path'],
-    #                                                                                                 test_size = config['test_size'],
-    #                                                                                                 val_size = config['val_size'],
-    #                                                                                                 #   input_types = config['input_types'],
-    #                                                                                                 label=config['label'], logger=logger,
-    #                                                                                                 full = False,
-    #                                                                                                 save_data = False,
-    #                                                                                                 shuffle=True)
+            test_mae = run_regressors(train_X, train_y, valid_X, valid_y, valid_X, valid_y, logger=logger, config=config, save_pred=True, ids = test_ids)
+            mad = mean_absolute_error(len(test_y) * [np.mean(train_y)], test_y)
+            mads.append(mad)
+            maes.append(test_mae)
+            logger.fprint(f'MAD is {mad}')
+        logger.fprint(f'Mean MAD is {np.mean(mads)}')
+        logger.fprint(f'Mean MAE is {np.mean(maes)}')
+        logger.fprint('done')
+    else:
+        train_ids, train_X, train_y,  valid_ids, valid_X, valid_y, test_ids, test_X, test_y = load_csv(train_data_path=config['train_data_path'],
+                                                                                                    val_data_path=config['val_data_path'],
+                                                                                                    test_data_path=config['test_data_path'],
+                                                                                                    test_size = config['test_size'],
+                                                                                                    val_size = config['val_size'],
+                                                                                                    #   input_types = config['input_types'],
+                                                                                                    label=config['label'], logger=logger,
+                                                                                                    full = False,
+                                                                                                    save_data = False,
+                                                                                                    shuffle=True)
                                     
 
-    #     # train_X = np.nan_to_num(train_X, nan=small_constant)
-    #     # valid_X = np.nan_to_num(valid_X, nan=small_constant)
-    #     # test_X = np.nan_to_num(test_X, nan=small_constant)
+        # train_X = np.nan_to_num(train_X, nan=small_constant)
+        # valid_X = np.nan_to_num(valid_X, nan=small_constant)
+        # test_X = np.nan_to_num(test_X, nan=small_constant)
 
-    #     assert not np.any(np.isnan(train_X))
-    #     # train_X = np.where(train_X == 0, small_constant, train_X)
-    #     # valid_X = np.where(valid_X == 0, small_constant, valid_X)
-    #     # test_X = np.where(test_X == 0, small_constant, test_X)
+        assert not np.any(np.isnan(train_X))
+        # train_X = np.where(train_X == 0, small_constant, train_X)
+        # valid_X = np.where(valid_X == 0, small_constant, valid_X)
+        # test_X = np.where(test_X == 0, small_constant, test_X)
 
-    #     run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred=True, ids_test = test_ids, logger=logger, config=config, timeststamp=timestamp)
-        # logger.fprint('done')
+        run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred=True, ids_test = test_ids, logger=logger, config=config, timeststamp=timestamp)
+        logger.fprint('done')
