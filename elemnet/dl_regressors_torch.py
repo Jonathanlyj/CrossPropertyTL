@@ -203,7 +203,7 @@ def eval_in_batches(model, dataloader, device, criterion=nn.L1Loss()):
 
 
 
-def save_predictions(test_dataloader, model, device, ids_test, save_path):
+def save_predictions(test_dataloader, model, device, ids_test, save_path, timestamp=None):
     model.eval()
     raw_predictions = []
     actual_labels = []
@@ -222,6 +222,8 @@ def save_predictions(test_dataloader, model, device, ids_test, save_path):
     output_dir = "../prediction_torch"
     os.makedirs(output_dir, exist_ok=True)
     pred_path = os.path.join(output_dir, f"{save_path.split('/')[-1]}_pred_otf.csv")
+    if timestamp is not None:
+        pred_path = pred_path.replace('.csv', f'_{timestamp}.csv')
     predictions_df = pd.DataFrame({
         'ids_test': ids_test, 
         'labels': actual_labels,
@@ -232,7 +234,7 @@ def save_predictions(test_dataloader, model, device, ids_test, save_path):
     predictions_df.to_csv(pred_path, index=False)
 
     print(f"Predictions saved at {pred_path}")
-def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred, ids_test=None, logger=None, config=None):
+def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred, ids_test=None, logger=None, config=None, timeststamp=None):
     assert config is not None
     hyper_params.update(config['paramsGrid'])
     assert  logger is not None
@@ -337,6 +339,9 @@ def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred
 
     num_batches = len(train_dataloader)
     rr.fprint('num_batches:', num_batches)
+    model_save_path = os.path.join(keras_path, f"model_{architecture}.pt")
+    if timestamp is not None:
+        model_save_path = model_save_path.replace('.pt', f'_{timestamp}.pt')
     for epoch in range(start_epoch, num_epochs):
         running_loss = 0.0
         for batch_idx, batch in enumerate(train_dataloader):
@@ -376,7 +381,13 @@ def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred
                     test_error = test_metric(test_predictions, test_labels)
                     rr.fprint('Test error is %.12f' % test_error)
                     if save_pred:
-                        save_predictions(test_dataloader, model, device, ids_test, save_path)
+                        save_predictions(test_dataloader, model, device, ids_test, save_path, timestamp)
+                    checkpoint = {
+                        'model_state_dict': model.state_dict(),
+                        'optimizer_state_dict': optimizer.state_dict(),
+                    }
+                    torch.save(checkpoint, model_save_path)
+                    rr.fprint(f'final model saved at {model_save_path} at epoch {epoch+1}')
                     return best_val_error
 
             sys.stdout.flush()
@@ -389,15 +400,21 @@ def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred
                 'optimizer_state_dict': optimizer.state_dict(),
             }
             os.makedirs(keras_path, exist_ok=True)
-            model_save_path = os.path.join(keras_path, f"model_{architecture}.pt")
             torch.save(checkpoint, model_save_path)
             rr.fprint(f'Checkpoint saved at {model_save_path} at epoch {epoch+1}')
     test_predictions = eval_in_batches(model, test_dataloader, device)
     test_error = test_metric(test_predictions, test_labels)
     rr.fprint('Test error is %f' % test_error)
     if save_pred:
-        save_predictions(test_dataloader, model, device, ids_test, save_path)
+        save_predictions(test_dataloader, model, device, ids_test, save_path, timeststamp)
 
+    os.makedirs(keras_path, exist_ok=True)
+    checkpoint = {
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+    }
+    torch.save(checkpoint, model_save_path)
+    rr.fprint(f'final model saved at {model_save_path}')
 
     return best_val_error
 
@@ -496,5 +513,5 @@ if __name__=='__main__':
         # valid_X = np.where(valid_X == 0, small_constant, valid_X)
         # test_X = np.where(test_X == 0, small_constant, test_X)
 
-        run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred=True, ids_test = test_ids, logger=logger, config=config)
+        run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred=True, ids_test = test_ids, logger=logger, config=config, timeststamp=timestamp)
         logger.fprint('done')
