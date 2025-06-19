@@ -25,13 +25,16 @@ props=("mbj_bandgap")  # Add more if needed
 
 # Inference
 for prop in "${props[@]}"; do 
-    if [[ "$device" == "cpu" ]]; then
-        model_path="model/alignn_matbert-base-cased_robo_prop_${prop}/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250614_193231.pt"
-    else
-        model_path="model/alignn_matbert-base-cased_robo_prop_${prop}/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250614_184558.pt"
-    fi
-
+    #cpu trained model
+    model_path="model/alignn_matbert-base-cased_robo_prop_${prop}/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250614_193231.pt"
     python dl_regressors_torch_predict.py \
         --config_file ./sample/example_alignn_matbert-base-cased_robo_prop_"$prop".config \
         --model_path "$model_path"
+    #gpu trained model
+    model_path="model/alignn_matbert-base-cased_robo_prop_${prop}/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250614_184558.pt"
+    python dl_regressors_torch_predict.py \
+        --config_file ./sample/example_alignn_matbert-base-cased_robo_prop_"$prop".config \
+        --model_path "$model_path"
+
+
 done
