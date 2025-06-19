@@ -4,5 +4,5 @@ wget https://figshare.com/ndownloader/articles/27569631/versions/2 -O tl_dataset
 unzip tl_dataset.zip -d tl_dataset
 cd ..
 wget https://figshare.com/ndownloader/articles/29367467?private_link=1be8bdcbd8db1ff52d5c -O models.zip
-unzip model.zip
+unzip models.zip
 
