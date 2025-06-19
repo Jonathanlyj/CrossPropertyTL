@@ -114,35 +114,35 @@ class ModelSlim(torch.nn.Module):
                     crt_layer = []
                     if aux_layers and aux_layers[0] == 'B':
                         if len(aux_layers)>1 and aux_layers[1]=='A':
-                            print('adding fully connected layers with %d outputs followed by batch_norm and act' % num_outputs)
+                            # print('adding fully connected layers with %d outputs followed by batch_norm and act' % num_outputs)
                             crt_layer.append(nn.Linear(prev_num_outputs, num_outputs))
                             crt_layer.append(nn.BatchNorm1d(num_outputs, affine=True))
                             crt_layer.append(nn.ReLU())
                         else:
-                            print('adding fully connected layers with %d outputs followed by batch_norm' % num_outputs)
+                            # print('adding fully connected layers with %d outputs followed by batch_norm' % num_outputs)
                             crt_layer.append(nn.Linear(prev_num_outputs, num_outputs))
                             crt_layer.append(nn.ReLU())
                             crt_layer.append(nn.BatchNorm1d(num_outputs, affine=True))
                     else:
-                        print('adding fully connected layers with %d outputs' % num_outputs)
+                        # print('adding fully connected layers with %d outputs' % num_outputs)
                         crt_layer.append(nn.Linear(prev_num_outputs, num_outputs))
                         crt_layer.append(nn.ReLU())
                     if 'R' in aux_layers:
                         if prev_num_outputs and prev_num_outputs==num_outputs:
-                            print('adding residual, both sizes are same')
+                            # print('adding residual, both sizes are same')
                             crt_layer = [ResNet(nn.Sequential(*crt_layer))]
                         else:
                             crt_layer = [ResNet(nn.Sequential(*crt_layer), nn.Linear(prev_num_outputs, num_outputs))]
-                            print('adding residual with fc as the size are different')
+                            # print('adding residual with fc as the size are different')
                     prev_num_outputs = num_outputs
                     block_layer = block_layer + crt_layer
                 aux_layers_sub = re.findall(r'[A-Z]', arch[1])
                 if 'R' in aux_layers_sub:
                     if prev_block_num_outputs and prev_block_num_outputs == num_outputs:
-                        print('adding residual to stub, both sizes are same')
+                        # print('adding residual to stub, both sizes are same')
                         block_layer = [ResNet(nn.Sequential(*block_layer))]
                     else:
-                        print('adding residual to stub with fc as the size are different')
+                        # print('adding residual to stub with fc as the size are different')
                         block_layer = [ResNet(nn.Sequential(*block_layer), nn.Linear(prev_block_num_outputs, num_outputs))]
                 if 'D' in aux_layers_sub and num_labels == 1 and len(dropouts) > i:
                     #skip dropout for now
@@ -152,10 +152,10 @@ class ModelSlim(torch.nn.Module):
                 prev_block_num_outputs = num_outputs
             else:
                 # final layer
-                print('adding final layer with ' + str(num_labels) + ' output')
+                # print('adding final layer with ' + str(num_labels) + ' output')
                 block_layer = [nn.Linear(prev_block_num_outputs, num_labels)]
                 if 'R' in arch:
-                    print('using ReLU at last layer')
+                    # print('using ReLU at last layer')
                     block_layer.append(nn.ReLU())
             self.arch_layers += block_layer
 
@@ -204,7 +204,7 @@ def eval_in_batches(model, dataloader, device, criterion=nn.L1Loss()):
 
 
 
-def save_predictions(test_dataloader, model, device, ids_test, save_path, timestamp=None):
+def save_predictions(test_dataloader, model, device, ids_test, save_path, timestamp=None, skip_save=False):
     model.eval()
     raw_predictions = []
     actual_labels = []
@@ -219,7 +219,10 @@ def save_predictions(test_dataloader, model, device, ids_test, save_path, timest
             actual_labels.append(target.cpu().numpy())    # Move to CPU, then convert to numpy array
 
     raw_predictions = np.concatenate(raw_predictions).flatten()
+    
     actual_labels = np.concatenate(actual_labels).flatten()
+    mae = mean_absolute_error(actual_labels, raw_predictions)
+    print(f'MAE on inference set: {mae}')
     output_dir = "../prediction_torch"
     os.makedirs(output_dir, exist_ok=True)
     pred_path = os.path.join(output_dir, f"{save_path.split('/')[-1]}_pred_otf.csv")
@@ -232,9 +235,12 @@ def save_predictions(test_dataloader, model, device, ids_test, save_path, timest
     })
 
     # Save the predictions DataFrame as a CSV file
-    predictions_df.to_csv(pred_path, index=False)
+    if not skip_save:
+        predictions_df.to_csv(pred_path, index=False)
+        print(f"Predictions saved at {pred_path}")
+    return predictions_df
 
-    print(f"Predictions saved at {pred_path}")
+    
 def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, save_pred, ids_test=None, logger=None, config=None, timeststamp=None):
     assert config is not None
     hyper_params.update(config['paramsGrid'])
