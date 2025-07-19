@@ -21,10 +21,11 @@ props=("Tc_supercon")  # Add more if needed
 
 # Training
 for prop in "${props[@]}"; do 
-    python dl_regressors_torch.py --config_file ./sample/example_alignn_matbert-base-cased_robo_prop_"$prop"_local.config    
+    python dl_regressors_torch.py --config_file ./sample/example_alignn_matbert-base-cased_robo_prop_"$prop"_local.config
+    python dl_regressors_tf2_dtm.py --config_file ./sample/example_alignn_matbert-base-cased_robo_prop_"$prop"_local.config
 done
 
-# Inference
+# Inference (for pytorch models)
 
 # prop="mbj_bandgap"
 # model_paths=(
