@@ -55,8 +55,18 @@ checkpoint = torch.load(args.model_path, map_location=device)
 model.load_state_dict(checkpoint['model_state_dict'])
 model.eval()
 
+
+
+def extract_timestamp(file_path: str) -> str:
+    filename = os.path.basename(file_path)
+    match = re.search(r'\d{8}_\d{6}', filename)
+    return match.group(0) if match else ""
+
+timestamp = extract_timestamp(args.model_path)
+model_str = 'cpu_leia' if device.type == 'cpu' else 'gpu_leia'
+run_id = "_".join([timestamp,model_str])
 # Inference and save
-df = save_predictions(test_loader, model, device, ids, save_path, skip_save=True)
+df = save_predictions(test_loader, model, device, ids, save_path, timestamp=run_id, skip_save=False)
 df = df.iloc[:] #
 mae = np.mean(np.abs(df['predictions'] - df['labels']))
 num_samples = len(df)
