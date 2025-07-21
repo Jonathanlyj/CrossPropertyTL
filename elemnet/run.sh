@@ -29,12 +29,12 @@ done
 
 # prop="mbj_bandgap"
 # model_paths=(
-#   "./models/leia/gpu/alignn_matbert-base-cased_robo_prop_mbj_bandgap/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250614_184558.pt"
-#   "./models/leia/cpu/alignn_matbert-base-cased_robo_prop_mbj_bandgap/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250614_193231.pt"
-#   "./models/luke/gpu/alignn_matbert-base-cased_robo_prop_mbj_bandgap/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250619_152657.pt"
-#   "./models/luke/cpu/alignn_matbert-base-cased_robo_prop_mbj_bandgap/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20241103_131729.pt"
-#   "./models/colab/gpu/alignn_matbert-base-cased_robo_prop_mbj_bandgap/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250616_015946.pt"
-#   "./models/colab/cpu/alignn_matbert-base-cased_robo_prop_mbj_bandgap/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250615_200123.pt"
+#   "./models/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250614_184558.pt" # Leia GPU
+#   "./models/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250614_193231.pt" # Leia CPU
+#   "./models/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250619_152657.pt" # Luke GPU
+#   "./models/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20241103_131729.pt" # Luke CPU
+#   "./models/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250616_015946.pt" # Colab GPU
+#   "./models/model_1024Rx4D-512Rx3D-256Rx3D-128Rx3D-64Rx2-32Rx1-1_20250615_200123.pt" # Colab CPU
 # )
 
 
