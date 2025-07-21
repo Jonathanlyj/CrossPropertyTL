@@ -56,7 +56,7 @@ parser.add_argument('--seed', help='random seed', default=0, type=int, required=
 parser.add_argument('--kfold', help='enable k-fold cross-validation', action='store_true')
 args,_ = parser.parse_known_args()
 
-hyper_params = {'batch_size':32, 'num_epochs':10, 'EVAL_FREQUENCY':1000, \
+hyper_params = {'batch_size':32, 'num_epochs':2000, 'EVAL_FREQUENCY':1000, \
                 'learning_rate':1e-7, 'momentum':0.9, 'lr_drop_rate':0.5, 'epoch_step':500, \
                 'nesterov':True, 'reg_W':0., 'optimizer':'Adam', 'reg_type':None, \
                     'activation':'relu', 'patience':100}
