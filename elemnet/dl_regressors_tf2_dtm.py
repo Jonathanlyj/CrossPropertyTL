@@ -381,16 +381,16 @@ if __name__=='__main__':
 
         
     else:
-        train_X, train_y, valid_X, valid_y, test_X, test_y = load_csv(train_data_path=config['train_data_path'],
-                                                                       val_data_path=config['val_data_path'],
-                                                                       test_data_path=config['test_data_path'],
-                                                                    test_size = config['test_size'],
-                                                                    val_size = config['val_size'],
-                                                                    #   input_types = config['input_types'],
-                                                                    label=config['label'], logger=logger,
-                                                                    full = False,
-                                                                    save_data = False,
-                                                                    shuffle=True)
+        train_ids, train_X, train_y, valid_ids, valid_X, valid_y, test_ids, test_X, test_y = load_csv(train_data_path=config['train_data_path'],
+                                                                        val_data_path=config['val_data_path'],
+                                                                        test_data_path=config['test_data_path'],
+                                                                        test_size = config['test_size'],
+                                                                        val_size = config['val_size'],
+                                                                        #   input_types = config['input_types'],
+                                                                        label=config['label'], logger=logger,
+                                                                        full = False,
+                                                                        save_data = False,
+                                                                        shuffle=True)
     
 
         # train_X = np.nan_to_num(train_X, nan=small_constant)
