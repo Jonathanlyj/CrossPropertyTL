@@ -16,8 +16,12 @@ dir_path = Path(args.dir_path)
 BASE_URL = 'https://api.figshare.com/v2'
 
 # Collect file metadata
-r = requests.get(f'{BASE_URL}/articles/{item_id}/files')
-file_metadata = json.loads(r.text)
+r = requests.get(f'{BASE_URL}/articles/{item_id}')
+article_metadata = r.json()
+file_metadata = article_metadata.get('files', [])
+for f in file_metadata:
+    print(f"File ID: {f['id']}, Name: {f['name']}")
+
 
 # Create directory if it does not exist
 dir_path.mkdir(parents=True, exist_ok=True)
