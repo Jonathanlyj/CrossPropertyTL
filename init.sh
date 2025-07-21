@@ -1,4 +1,4 @@
-pip install -r torch_requirements.txt
+pip install -r requirements.txt
 python3 download.py --item_id 27569631 --dir_path ./data/tl_dataset 
 # wget https://figshare.com/ndownloader/articles/27569631/versions/2 -O tl_dataset.zip
 python3 download.py --item_id 29367467 --dir_path ./elemnet/models 
