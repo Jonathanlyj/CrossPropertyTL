@@ -1,6 +1,6 @@
 # CrossPropertyTL for Deterministic Analysis
 
-This repository contains the code for performing cross-property deep transfer learning to predict materials properties. The DL code has been optimized to provide deterministic result. The code provides the following functions:
+This repository contains the code for performing cross-property deep transfer learning to predict materials properties. The DL code has been optimized to provide deterministic result. The input embeddings used for training are extracted using <a href="https://github.com/Jonathanlyj/ALIGNN-BERT-TL-crystal"> Hybrid-LLM-GNN framework </a>. This repo provides the following functions: 
 
 * Train a ElemNet model on a given dataset using Tensorflow or Pytorch framework
 * Predict material properties of new compounds with a pre-trained ElemNet model
